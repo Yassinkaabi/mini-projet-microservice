@@ -1,0 +1,36 @@
+syntax = "proto3";
+package menu;
+// Définition du message TV show
+message Menu {
+string id = 1;
+string title = 2;
+string description = 3;
+// Ajouter d'autres champs de données pour les séries TV au besoin
+}
+// Définition des messages de requête et de réponse pour les méthodes
+message GetMenuRequest {
+    string menu_id = 1;
+}
+message GetMenuResponse {
+    Menu menu = 1;
+}
+message CreateMenuRequest {
+    string title = 1;
+    string description = 2;
+}
+message CreateMenuResponse {
+    Menu menu = 1;
+}
+message SearchMenuRequest {
+    string query = 1;
+}
+message SearchMenuResponse {
+    repeated Menu menus = 1;
+}
+// Définition du service de séries TV
+service MenuService {
+rpc GetMenu(GetMenuRequest) returns (GetMenuResponse);
+rpc SearchMenu(SearchMenuRequest) returns (SearchMenuResponse);
+rpc CreateMenu(CreateMenuRequest) returns (CreateMenuResponse);
+// Ajouter d'autres méthodes au besoin
+}
