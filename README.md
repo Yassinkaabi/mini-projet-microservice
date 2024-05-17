@@ -43,7 +43,7 @@ Follow these steps to install and set up the project.
 
 ###  :package: Commands
 - cd mini-projet-microservice
-- 
+  
   . Start the Food Service:
     nodemon foodMicroservice.js
   
@@ -94,10 +94,6 @@ Add a file structure here with the basic details about files, below is an exampl
 
 ```
 
-| No | File Name | Details 
-|----|------------|-------|
-| 1  | index | Entry point
-
 ###  :hammer: Build
 npm install
 
@@ -117,11 +113,3 @@ Please follow our coding guidelines and best practices when contributing.
 gRPC Documentation
 GraphQL Documentation
 Node.js Documentation
-##  :camera: Gallery
-Pictures of your project.
-
-## :star2: Credit/Acknowledgment
-Credit the authors here.
-
-##  :lock: License
-Add a license here, or a link to it.
