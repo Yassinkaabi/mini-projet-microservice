@@ -1,9 +1,10 @@
-const grpc = require('@grpc/grpc-js');
 const mongoose = require('mongoose');
+const grpc = require('@grpc/grpc-js');
 const protoLoader = require('@grpc/proto-loader');
-const { consumeMessages, sendMessage } = require('./kafkaHelper')
+const { consumeMessages, sendMessage } = require('../kafkaHelper')
+
 // Charger le fichier menu.proto
-const menuShowProtoPath = 'menu.proto';
+const menuShowProtoPath = '../proto/menu.proto';
 const menuProtoDefinition = protoLoader.loadSync(menuShowProtoPath, {
     keepCase: true,
     longs: String,
@@ -11,20 +12,16 @@ const menuProtoDefinition = protoLoader.loadSync(menuShowProtoPath, {
     defaults: true,
     oneofs: true,
 });
+
 const menuProto = grpc.loadPackageDefinition(menuProtoDefinition).menu;
 
-mongoose.connect('mongodb://localhost:27017/FoodManagment', {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-});
+// Connect to database
+const connectToMongoDB = require('../database/db');
 
 // Define the movie schema
-const menuModel = mongoose.model('Menu', {
-    title: String,
-    description: String,
-});
+const menuModel = require('../models/menuModel');
 
-// Implémenter le service de séries TV
+// Implémenter le service de menu
 const menuService = {
     getMenu: async (call, callback) => {
         // Récupérer les détails de la série TV à partir de la base de données
@@ -54,7 +51,7 @@ const menuService = {
                     { description: { $regex: `^.*${query}.*`, $options: 'i' } }
                 ]
             });
-            callback(null, { tv_shows: menu });
+            callback(null, { menus: menu });
         } catch (err) {
             console.error('Error searching tv Show:', err);
             callback(err);
@@ -62,17 +59,17 @@ const menuService = {
     },
 
     CreateMenu: async (call, callback) => {
-        const { title, description } = call.request;
+        const { name } = call.request;
         const newMenu = new menuModel({
-            title,
-            description,
+            name
         });
         const menuSaved = await newMenu.save()
-        await sendMessage('menus_topic', { title, description });
+        await sendMessage('menus_topic', { name });
         callback(null, { menu: menuSaved });
         await consumeMessages('menus_topic', menuSaved);
     },
 };
+
 // Créer et démarrer le serveur gRPC
 const server = new grpc.Server();
 server.addService(menuProto.MenuService.service, menuService);
@@ -84,7 +81,8 @@ server.bindAsync(`0.0.0.0:${port}`, grpc.ServerCredentials.createInsecure(),
             return;
         }
         console.log(`Le serveur s'exécute sur le port ${port}`);
+        connectToMongoDB();
         server.start();
     });
 console.log(`Microservice de menu en cours d'exécution sur le port ${port}`);
-consumeMessages('menus_topic');
+// consumeMessages('menus_topic');

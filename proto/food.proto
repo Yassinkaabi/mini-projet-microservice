@@ -1,0 +1,65 @@
+syntax = "proto3";
+package food;
+
+// Food message definition
+message Food {
+    string _id = 1;
+    string title = 2;
+    string description = 3;
+    string menu_id = 4;
+}
+
+// Request and Response messages for Get, Create, Update, and Delete operations
+message GetFoodRequest {
+    string food_id = 1;
+}
+
+message GetFoodResponse {
+    Food food = 1;
+}
+
+message CreateFoodRequest {
+    string title = 1;
+    string description = 2;
+    string menu_id = 3;
+}
+
+message CreateFoodResponse {
+    Food food = 1;
+}
+
+message UpdateFoodRequest {
+    string food_id = 1;
+    string title = 2;
+    string description = 3;
+    string menu_id = 4;
+}
+
+message UpdateFoodResponse {
+    Food food = 1;
+}
+
+message DeleteFoodRequest {
+    string food_id = 1;
+}
+
+message DeleteFoodResponse {
+    string message = 1;
+}
+
+message SearchFoodsRequest {
+    string query = 1;
+}
+
+message SearchFoodsResponse {
+    repeated Food foods = 1;
+}
+
+// FoodService definition
+service FoodService {
+    rpc GetFood(GetFoodRequest) returns (GetFoodResponse);
+    rpc Searchfoods(SearchFoodsRequest) returns (SearchFoodsResponse);
+    rpc CreateFood(CreateFoodRequest) returns (CreateFoodResponse);
+    rpc UpdateFood(UpdateFoodRequest) returns (UpdateFoodResponse);
+    rpc DeleteFood(DeleteFoodRequest) returns (DeleteFoodResponse);
+}
