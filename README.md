@@ -13,7 +13,6 @@ manage food items and menus efficiently using a microservices architecture with 
   - [Developmen Environment](#nut_and_bolt-development-environment)
   - [File Structure](#file_folder-file-structure)
   - [Build](#hammer-build)  
-  - [Deployment](#rocket-deployment)  
 - [Community](#cherry_blossom-community)
   - [Contribution](#fire-contribution)
   - [Branches](#cactus-branches)
@@ -79,7 +78,7 @@ Add a file structure here with the basic details about files, below is an exampl
 │   │   └── db.js
 |   ├── models
 |   |   └── foodModel.js
-|   |   └── foodModel.js
+|   |   └── menuModel.js
 │   ├── proto
 │   │   └── food.proto
 │   │   └── menu.proto
